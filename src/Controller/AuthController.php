@@ -20,19 +20,20 @@ class AuthController extends AbstractController
      * Аутентификация.
      */
     #[Route('/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(Request $request, AuthenticationUtils $authUtils): Response
     {
-        // получить ошибку, если она была
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        $form = $this->createForm(LoginType::class, [
-            'email' => $lastUsername
+        $form = $this->createForm(LoginType::class, null, [
+            'action' => $this->generateUrl('app_login'),
+            'method' => 'POST',
+            'csrf_protection' => true,
+            'csrf_token_id' => 'authenticate',
+            'csrf_field_name' => '_csrf_token',
+            'attr' => ['id' => 'login-form'],
         ]);
 
         return $this->render('auth/login.html.twig', [
             'form' => $form->createView(),
-            'error' => $error,
+            'error' => $authUtils->getLastAuthenticationError(),
         ]);
     }
 

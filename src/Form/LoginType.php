@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -26,7 +28,8 @@ class LoginType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank(['message' => 'Email не может быть пустым.']),
                     new Assert\Email(['message' => 'Введите корректный email.']),
-                ]
+                ],
+                'required' => true,
             ])
             ->add('password', PasswordType::class, [
                 'label' => 'Пароль',
@@ -36,7 +39,21 @@ class LoginType extends AbstractType
                         'min' => 6,
                         'minMessage' => 'Пароль должен содержать минимум {{ limit }} символов.',
                     ]),
-                ]
+                ],
+                'required' => true,
+            ])
+            ->add('submit', SubmitType::class, ['label' => 'Войти'])
+            ->add('_target_path', HiddenType::class, [
+                'mapped' => false,
+                'data' => '/dashboard',
             ]);
+    }
+
+    /**
+     * Убирает префикс формы.
+     */
+    public function getBlockPrefix(): string
+    {
+        return '';
     }
 }
