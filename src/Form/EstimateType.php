@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Form;
 
 use App\Entity\Estimate;
@@ -7,7 +9,10 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class EstimateFormType extends AbstractType
+/**
+ * Форма создания оценки.
+ */
+class EstimateType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
