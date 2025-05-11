@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service\Estimate;
 
-use App\Entity\Estimate;
-use App\Repository\EstimateRepository;
-use LogicException;
-use Symfony\Component\Form\FormInterface;
+use App\Dto\Estimate\StoreEstimateDto;
+use App\Repository\Estimate\EstimateRepository;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * Сервис для обработки оценки.
@@ -20,38 +17,29 @@ final class IndexEstimateService
      * Инициализация.
      */
     public function __construct(
-        private EstimateRepository $estimateRepository,
-        private RequestStack $requestStack,
+        private readonly EstimateRepository $estimateRepository,
+        private readonly RequestStack $requestStack,
+        private readonly EstimateValidator $estimateValidator,
     ) {
     }
 
     /**
      * Запуск сервиса.
      */
-    public function run(FormInterface $form, UserInterface $user, Estimate $estimate): array
+    public function run(StoreEstimateDto $dto): array
     {
+        $form = $dto->form;
+        $estimate = $dto->estimate;
+
         $request = $this->requestStack->getCurrentRequest();
         $form->handleRequest($request);
         $errors = [];
 
         if ($form->isSubmitted()) {
-            $service = $form->get('service')->getData();
-            $email = $form->get('email')->getData();
-
-            if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $errors[] = 'Введите корректный email.';
-            }
-
-            if (empty($service)) {
-                $errors[] = 'Выберите услугу.';
-            }
+            $errors = $this->estimateValidator->validate($form);
 
             if (empty($errors) && $form->isValid()) {
-                if (!$user) {
-                    throw new LogicException('Пользователь не найден. Убедитесь, что он авторизован.');
-                }
-
-                $estimate->setUser($user);
+                $estimate->setUser($dto->user);
 
                 $this->estimateRepository->add($estimate, true);
 

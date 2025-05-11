@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Repository;
+namespace App\Repository\Estimate;
 
 use App\Entity\Estimate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

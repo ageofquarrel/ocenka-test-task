@@ -17,7 +17,7 @@ use Money\Money;
 #[ORM\Entity]
 #[ORM\Table(name: 'services')]
 #[ORM\HasLifecycleCallbacks]
-final class Service
+class Service
 {
     /**
      * Валюта.

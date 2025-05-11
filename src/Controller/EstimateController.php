@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Dto\Estimate\StoreEstimateDto;
 use App\Entity\Estimate;
 use App\Form\EstimateType;
 use App\Service\Estimate\IndexEstimateService;
@@ -32,7 +33,13 @@ class EstimateController extends AbstractController
         $estimate = new Estimate();
         $form = $this->createForm(EstimateType::class, $estimate);
 
-        $errors = $service->run($form, $user, $estimate);
+        $dto = new StoreEstimateDto(
+            $form,
+            $user,
+            $estimate
+        );
+
+        $errors = $service->run($dto);
 
         return $this->render('estimate/index.html.twig', [
             'form' => $form->createView(),
