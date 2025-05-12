@@ -65,12 +65,27 @@ class Estimate
     )]
     private UserInterface $user;
 
+    /**
+     * Дата создания.
+     *
+     * @var DateTimeImmutable
+     */
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
+    /**
+     * Дата обновления.
+     *
+     * @var DateTimeImmutable
+     */
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $updatedAt;
 
+    /**
+     * Дата удаления.
+     *
+     * @var DateTimeImmutable|null
+     */
     #[ORM\Column(type: 'datetime_immutable', nullable: true)]
     private ?DateTimeImmutable $deletedAt = null;
 
@@ -92,6 +107,11 @@ class Estimate
         return $this;
     }
 
+    /**
+     * Заполнение при создании.
+     *
+     * @return void
+     */
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
@@ -99,6 +119,11 @@ class Estimate
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    /**
+     * Заполнения при обновлении.
+     *
+     * @return void
+     */
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {

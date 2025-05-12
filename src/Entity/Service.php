@@ -55,9 +55,19 @@ class Service
     #[ORM\Column(type: 'integer')]
     private int $price;
 
+    /**
+     * Дата создания.
+     *
+     * @var DateTimeImmutable|null
+     */
     #[ORM\Column(type: 'datetime_immutable')]
     private ?DateTimeImmutable $createdAt = null;
 
+    /**
+     * Дата обновления.
+     *
+     * @var DateTimeImmutable|null
+     */
     #[ORM\Column(type: 'datetime_immutable')]
     private ?DateTimeImmutable $updatedAt = null;
 
@@ -115,6 +125,11 @@ class Service
         return $this;
     }
 
+    /**
+     * Заполнение при создании.
+     *
+     * @return void
+     */
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
@@ -122,6 +137,11 @@ class Service
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    /**
+     * Заполнения при обновлении.
+     *
+     * @return void
+     */
     #[ORM\PreUpdate]
     public function onPreUpdate(): void
     {

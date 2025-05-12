@@ -24,9 +24,7 @@ class EstimateController extends AbstractController
     #[Route('/dashboard', name: 'app_estimate', methods: ['GET', 'POST'])]
     public function index(Request $request, IndexEstimateService $service): Response
     {
-        $user = $this->getUser();
-
-        if (!$user) {
+        if (!$user = $this->getUser()) {
             return $this->render('error/access_denied.html.twig');
         }
 

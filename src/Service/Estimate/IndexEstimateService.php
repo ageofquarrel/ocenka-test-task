@@ -50,7 +50,7 @@ final class IndexEstimateService
                 return $errors;
             }
 
-            if (count($errors) > 0) {
+            if (!empty($errors)) {
                 foreach ($errors as $error) {
                     $request->getSession()
                         ->getFlashBag()

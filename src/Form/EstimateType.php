@@ -19,6 +19,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class EstimateType extends AbstractType
 {
+    /**
+     * Создание формы.
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
